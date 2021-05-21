@@ -1,0 +1,13 @@
+#application.yml
+---
+spring.profiles: local
+spring.profiles.include: common, local
+---
+spring.profiles: localhost
+spring.profiles.include: common, localhost
+---
+spring.profiles: build
+spring.profiles.include: common, build
+---
+spring.profiles: cloud
+spring.profiles.include: common, cloud

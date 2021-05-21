@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true"
+	scanPeriod="30 seconds">
+
+	<property name="LOG_PATTERN"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSSZ} [%t] %p [%c{10}: %L] \t%m%n" />
+
+	<appender name="Console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>${LOG_PATTERN}</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="SpringLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/spring.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>${LOG_PATTERN}</Pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily and when the file reaches 10 MegaBytes -->
+			<fileNamePattern>
+				${LOG_PATH}/spring-%d{yyyy-MM-dd}/spring-%d{yyyy-MM-dd}.%i.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>7</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="DebugLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH }/application-debug.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>${LOG_PATTERN}</Pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily and when the file reaches 10 MegaBytes -->
+			<fileNamePattern>
+				${LOG_PATH}/debug-%d{yyyy-MM-dd}/application-debug-%d{yyyy-MM-dd}.%i.log.gz
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>7</maxHistory>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="DEBUG" />
+	</root>
+
+	<logger name="com.tsolution.sso" additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+	<logger name="org.hibernate.SQL" additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+		additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+	<logger name="org.springframework.web.servlet.DispatcherServlet"
+		additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+	<logger
+		name="org.springframework.web.filter.CommonsRequestLoggingFilter"
+		additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+	<logger name="org.springframework" additivity="false">
+		<appender-ref ref="SpringLog" level="INFO" />
+		<appender-ref ref="Console" level="INFO" />
+		<appender-ref ref="DebugLog" level="TRACE" />
+	</logger>
+
+</configuration>
